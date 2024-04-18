@@ -13,10 +13,10 @@ public record UserRegistration(
     String password
 ) {
 
-    public User toEntity() {
+    public User toEntity(final String encodedPassword) {
         return User.builder()
             .username(username)
-            .password(password)
+            .password(encodedPassword)
             .build();
     }
 }
