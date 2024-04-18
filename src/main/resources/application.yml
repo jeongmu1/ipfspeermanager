@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: ipfspeermanager
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ipfs_peer
+    username: bookmaster
+    password: dn123456
+
+  jwt:
+    issuer: jeongmu1
+    secret-key: YWprbGdoc2Rma2xnanNkaGZnbGprc2RmZ2hsc2ss22FRsas56
+    access-token-expiration: 604_800_900
+    refresh-token-expiration: 604_800_900
