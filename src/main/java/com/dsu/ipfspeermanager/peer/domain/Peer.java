@@ -40,7 +40,7 @@ public class Peer extends BaseTimeEntity {
     private PeerGroup peerGroup;
 
     @Column(nullable = false)
-    private boolean enabled = false;
+    private boolean enabled = true;
 
     @Column(nullable = false)
     private boolean socketConnected = false;

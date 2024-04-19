@@ -1,7 +1,9 @@
 package com.dsu.ipfspeermanager.peergroup.service;
 
 import com.dsu.ipfspeermanager.peer.domain.Peer;
+import com.dsu.ipfspeermanager.peer.dto.request.PeerCreation;
 import com.dsu.ipfspeermanager.peer.dto.response.PeerInfo;
+import com.dsu.ipfspeermanager.peer.repository.PeerRepository;
 import com.dsu.ipfspeermanager.peergroup.domain.GroupAccess;
 import com.dsu.ipfspeermanager.peergroup.domain.PeerGroup;
 import com.dsu.ipfspeermanager.peergroup.dto.request.GroupInvitation;
@@ -27,6 +29,7 @@ public class PeerGroupService {
     private final PeerGroupRepository peerGroupRepository;
     private final UserRepository userRepository;
     private final GroupAccessRepository groupAccessRepository;
+    private final PeerRepository peerRepository;
 
     @Transactional
     public void addPeerGroup(
@@ -79,6 +82,18 @@ public class PeerGroupService {
             .map(GroupAccess::getPeerGroup)
             .map(SimpleGroupInfo::from)
             .toList();
+    }
+
+    @Transactional
+    public void addPeerToGroup(
+        final PeerCreation dto,
+        final long groupId,
+        final String username
+    ) {
+        final User user = userRepository.findByUsername(username).orElseThrow();
+        final PeerGroup group = findAndHandleNullability(groupId);
+        checkAccessibility(user, group);
+        peerRepository.save(dto.toEntity(user, group));
     }
 
     private void checkAccessibility(final User user, final PeerGroup group) {

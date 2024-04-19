@@ -2,6 +2,7 @@ package com.dsu.ipfspeermanager.peergroup.controller;
 
 import static com.dsu.ipfspeermanager.global.util.HttpStatusResponseEntity.*;
 
+import com.dsu.ipfspeermanager.peer.dto.request.PeerCreation;
 import com.dsu.ipfspeermanager.peer.dto.response.PeerInfo;
 import com.dsu.ipfspeermanager.peergroup.dto.request.GroupInvitation;
 import com.dsu.ipfspeermanager.peergroup.dto.request.PeerGroupCreation;
@@ -58,5 +59,15 @@ public class PeerGroupController {
     public ResponseEntity<List<SimpleGroupInfo>> getGroupInfos(final Principal principal) {
         return ResponseEntity.status(HttpStatus.OK)
             .body(peerGroupService.getSimpleGroupInfos(principal.getName()));
+    }
+
+    @PostMapping("/{id}/peers")
+    public ResponseEntity<HttpStatus> createPeer(
+        @PathVariable("id") final long id,
+        @RequestBody final PeerCreation dto,
+        final Principal principal
+    ) {
+        peerGroupService.addPeerToGroup(dto, id, principal.getName());
+        return RESPONSE_CREATED;
     }
 }
