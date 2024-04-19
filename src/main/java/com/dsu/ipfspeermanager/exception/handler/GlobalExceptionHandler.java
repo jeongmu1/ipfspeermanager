@@ -1,6 +1,7 @@
 package com.dsu.ipfspeermanager.exception.handler;
 
 import com.dsu.ipfspeermanager.exception.response.ErrorResponse;
+import com.dsu.ipfspeermanager.peergroup.exception.ForbiddenAccessException;
 import java.util.NoSuchElementException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,14 @@ public class GlobalExceptionHandler {
         final NoSuchElementException e
     ) {
         final HttpStatus status = HttpStatus.NOT_FOUND;
+        return ResponseEntity.status(status).body(ErrorResponse.of(status, e.getMessage()));
+    }
+
+    @ExceptionHandler(ForbiddenAccessException.class)
+    public ResponseEntity<ErrorResponse> handleForbiddenAccessException(
+        final ForbiddenAccessException e
+    ) {
+        final HttpStatus status = HttpStatus.FORBIDDEN;
         return ResponseEntity.status(status).body(ErrorResponse.of(status, e.getMessage()));
     }
 }
