@@ -6,6 +6,7 @@ import com.dsu.ipfspeermanager.peergroup.domain.GroupAccess;
 import com.dsu.ipfspeermanager.peergroup.domain.PeerGroup;
 import com.dsu.ipfspeermanager.peergroup.dto.request.GroupInvitation;
 import com.dsu.ipfspeermanager.peergroup.dto.request.PeerGroupCreation;
+import com.dsu.ipfspeermanager.peergroup.dto.response.SimpleGroupInfo;
 import com.dsu.ipfspeermanager.peergroup.exception.ForbiddenAccessException;
 import com.dsu.ipfspeermanager.peergroup.repository.GroupAccessRepository;
 import com.dsu.ipfspeermanager.peergroup.repository.PeerGroupRepository;
@@ -65,6 +66,18 @@ public class PeerGroupService {
             .stream()
             .filter(Peer::isEnabled)
             .map(PeerInfo::from)
+            .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<SimpleGroupInfo> getSimpleGroupInfos(
+        final String username
+    ) {
+        final User user = userRepository.findByUsername(username).orElseThrow();
+        return groupAccessRepository.findGroupAccessesByUser(user)
+            .stream()
+            .map(GroupAccess::getPeerGroup)
+            .map(SimpleGroupInfo::from)
             .toList();
     }
 

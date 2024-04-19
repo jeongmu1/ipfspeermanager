@@ -5,6 +5,7 @@ import static com.dsu.ipfspeermanager.global.util.HttpStatusResponseEntity.*;
 import com.dsu.ipfspeermanager.peer.dto.response.PeerInfo;
 import com.dsu.ipfspeermanager.peergroup.dto.request.GroupInvitation;
 import com.dsu.ipfspeermanager.peergroup.dto.request.PeerGroupCreation;
+import com.dsu.ipfspeermanager.peergroup.dto.response.SimpleGroupInfo;
 import com.dsu.ipfspeermanager.peergroup.service.PeerGroupService;
 import java.security.Principal;
 import java.util.List;
@@ -51,5 +52,11 @@ public class PeerGroupController {
     ) {
         return ResponseEntity.status(HttpStatus.OK)
             .body(peerGroupService.getPeersOfGroup(id, principal.getName()));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<SimpleGroupInfo>> getGroupInfos(final Principal principal) {
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(peerGroupService.getSimpleGroupInfos(principal.getName()));
     }
 }

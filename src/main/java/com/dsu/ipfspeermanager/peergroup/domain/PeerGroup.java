@@ -11,7 +11,6 @@ import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,8 +18,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-@AllArgsConstructor
-@Builder
 public class PeerGroup extends BaseTimeEntity {
 
     @Column(nullable = false)
@@ -34,8 +31,23 @@ public class PeerGroup extends BaseTimeEntity {
     private User host;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "peerGroup")
-    private List<Peer> peers = new ArrayList<>();
+    private final List<Peer> peers = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "peerGroup")
-    private List<GroupAccess> groupAccesses = new ArrayList<>();
+    private final List<GroupAccess> groupAccesses = new ArrayList<>();
+
+    @Builder
+    public PeerGroup(
+        final String name,
+        final String swarm,
+        final User host
+    ) {
+        this.name = name;
+        this.swarm = swarm;
+        this.host = host;
+    }
+
+    public long getHostId() {
+        return host.getId();
+    }
 }
