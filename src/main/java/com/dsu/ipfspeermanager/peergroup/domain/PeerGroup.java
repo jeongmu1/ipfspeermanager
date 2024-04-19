@@ -35,4 +35,7 @@ public class PeerGroup extends BaseTimeEntity {
 
     @OneToMany(fetch = FetchType.LAZY)
     private List<Peer> peers = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<GroupAccess> groupAccesses = new ArrayList<>();
 }
