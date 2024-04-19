@@ -5,6 +5,7 @@ import com.dsu.ipfspeermanager.peergroup.exception.ForbiddenAccessException;
 import java.util.NoSuchElementException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -32,6 +33,14 @@ public class GlobalExceptionHandler {
         final ForbiddenAccessException e
     ) {
         final HttpStatus status = HttpStatus.FORBIDDEN;
+        return ResponseEntity.status(status).body(ErrorResponse.of(status, e.getMessage()));
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(
+        final HttpRequestMethodNotSupportedException e
+    ) {
+        final HttpStatus status = HttpStatus.NOT_FOUND;
         return ResponseEntity.status(status).body(ErrorResponse.of(status, e.getMessage()));
     }
 }
